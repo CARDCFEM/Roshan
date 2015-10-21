@@ -1,8 +1,9 @@
 #include "RoshanApp.h"
 
-#include "../../include/kernels/PyroRhoChangeKernel.h"
-#include "../../include/kernels/PyroTempTimeDerivative.h"
-#include "../../include/kernels/TempDiffusionKernel.h"
+#include "PyroRhoChangeKernel.h"
+#include "PyroTempTimeDerivative.h"
+#include "TempDiffusionKernel.h"
+#include "ComputeTemperatureBar.h"
 #include "RoshanRevision.h"
 
 #include "Moose.h"
@@ -13,6 +14,7 @@
 #include "TestIC.h"
 #include "strange.h"
 
+///////////////////////////////////////////
 #include "HeatConductionTimeDerivative.h"
 #include "HeatConductionKernel.h"
 #include "DensityKernel.h"
@@ -30,6 +32,9 @@
 #include "GasConvection.h"
 #include "GetSigma.h"
 #include "HeatFluxAuxKernel.h"
+
+
+#include "MonteCarloRadiationMaterial.h"
 
 #include "HeatFaceKernel.h"
 
@@ -89,26 +94,30 @@ RoshanApp::registerObjects(Factory & factory)
 	registerInitialCondition(TestIC);
 	registerInitialCondition(Strange);
 
+	registerUserObject(ComputeTemperatureBar);
+	registerMaterial(MonteCarloRadiationMaterial);
+
+
 	registerKernel(HeatConductionTimeDerivative);
 	registerKernel(HeatConductionKernel);
-	registerKernel(DensityKernel);
-	registerKernel(PyroRhoChangeKernel);
-	registerKernel (PyroTempTimeDerivative);
-	registerKernel (TempDiffusionKernel);
-	registerKernel (PyrolysisSource);
-	registerKernel (PyrolysisGasPressure);
-	registerKernel (PyrolysisGasSource);
-	registerKernel (PyrolysisEnergeKernel);
-	registerKernel (PyrolysisDensityKernel);
-	registerKernel (PyrolysisGasRhochange);
-	registerKernel (PyrolysisGasVelocity);
-	registerKernel (NoSourcePressure);
-	registerKernel (GasConvection);
+//	registerKernel(DensityKernel);
+//	registerKernel(PyroRhoChangeKernel);
+//	registerKernel (PyroTempTimeDerivative);
+//	registerKernel (TempDiffusionKernel);
+//	registerKernel (PyrolysisSource);
+//	registerKernel (PyrolysisGasPressure);
+//	registerKernel (PyrolysisGasSource);
+//	registerKernel (PyrolysisEnergeKernel);
+//	registerKernel (PyrolysisDensityKernel);
+//	registerKernel (PyrolysisGasRhochange);
+//	registerKernel (PyrolysisGasVelocity);
+//	registerKernel (NoSourcePressure);
+//	registerKernel (GasConvection);
 
 
 	registerMaterial(HeatConductionMaterial);
 	registerMaterial(HeatFluxMaterial);
-	registerMaterial(PyrolysisMaterial);
+//	registerMaterial(PyrolysisMaterial);
 
 	registerDGKernel(HeatFaceKernel);
 
@@ -118,9 +127,9 @@ RoshanApp::registerObjects(Factory & factory)
 	registerBoundaryCondition(HeatTransferBC);
 	registerBoundaryCondition(HeatRadiationBC);
 
-	registerAux(CosAuxKernel);
-	registerAux(RhoTimeDerivative);
-	registerAux(Gaspressure);
+//	registerAux(CosAuxKernel);
+//	registerAux(RhoTimeDerivative);
+//	registerAux(Gaspressure);
 	registerAux(GetSigma);
 	registerAux(HeatFluxAuxKernel);
 

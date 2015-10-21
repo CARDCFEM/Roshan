@@ -3,6 +3,6 @@
 #ifndef ROSHAN_REVISION_H
 #define ROSHAN_REVISION_H
 
-#define ROSHAN_REVISION "git commit 9edb2d4 on 2015-03-30"
+#define ROSHAN_REVISION "git commit 3bccc3d on 2015-10-19"
 
 #endif // ROSHAN_REVISION_H

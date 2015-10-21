@@ -45,6 +45,19 @@
   [../]
 []
 
+[UserObjects]
+  [./montecarlo_material]
+    type = ComputeTemperatureBar
+    boundary = '1'
+    max_reflect_count = 10
+    particle_count=10000
+    absorptivity=1.0
+    diffuse_reflectivity=0.5
+    mirrors_reflectivity=0.5
+    temperature = temp
+  [../]
+[]
+
 [BCs]
   [./left]
     type = HeatFluxBC
@@ -97,7 +110,7 @@
   type = Transient
   solve_type = newton
   dt = 1E-02
-  num_steps = 100
+  num_steps = 1
 
   l_tol = 1e-04
   nl_rel_tol = 1e-05

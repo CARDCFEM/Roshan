@@ -1,25 +1,33 @@
 [Mesh]
-  type = GeneratedMesh
-  dim = 3
-  xmin = -0.05
-  ymin = -0.05
-  zmin = -0.05
-  xmax = 0.05
-  ymax = 0.05
-  zmax = 0.05
-  nx = 10
-  ny = 10
-  nz = 10
+  file = square_cavity_2D_20.exo
+[]
 
 [Variables]
   [./temp]
   [../]
 []
 
+[AuxVariables]
+  [./heat_flux]
+    order = CONSTANT
+    family = MONOMIAL
+    
+  [../]
+[]
+
+[AuxKernels]
+  [./heat_flux_aux_kernel]
+    type = HeatFluxAuxKernel
+    variable = heat_flux
+    boundary = 'in_left in_bottom in_right in_top'
+  [../]
+[]
+
 [ICs]
   [./temp_ic]
     variable = temp
-    type = TestIC
+    type = ConstantIC
+    value = 300
   [../]
 []
 
@@ -35,56 +43,34 @@
 []
 
 [BCs]
-  [./left]
-    type = HeatTransferBC
+  [./out300]
+    type = IsoThermalBC
     variable = temp
-    boundary = left
-    h = 1000
-    Ta = 5000
-  [../]
-  [./right]
-    type = HeatTransferBC
-    variable = temp
-    boundary = right
-    h = 1000
-    Ta = 100
-  [../]
-  [./top]
-    type = HeatTransferBC
-    variable = temp
-    boundary = top
-    h = 1000
-    Ta = 700
-  [../]
- [./bottom]
-    type = DirichletBC
-    variable = temp
-    boundary = bottom
+    boundary = 'out_left out_top out_bottom '
     value = 300
   [../]
- [./front]
-    type = HeatTransferBC
+  [./out500]
+    type = HeatFluxBC
     variable = temp
-    boundary = front
-    h = 1000
-    Ta = 100
+    boundary = out_right
+    value = 1000000
   [../]
-  [./back]
-   type = HeatTransferBC
+  [./inner]
+    type = HeatRadiationBC
     variable = temp
-    boundary = back
-    h = 1500
-    Ta = 2000
+    boundary = 'in_left in_bottom in_right in_top'
   [../]
+
 []
 
+
 [UserObjects]
-  [./montecarlo_material]
+  [./montecarlo_userobject]
     type = ComputeTemperatureBar
-    boundary = '0 1 2 3 4 5'
+    boundary = 'in_left in_bottom in_right in_top'
     max_reflect_count = 10
     particle_count=10000
-    absorptivity=1.0
+    absorptivity=0.5
     diffuse_reflectivity=0.5
     mirrors_reflectivity=0.5
     temperature = temp
@@ -95,21 +81,26 @@
   [./material]
     type = HeatConductionMaterial
     temperature = temp
-    block = 0
+    block = ANY_BLOCK_ID
     t_list =  '100 200'
-    roe_list = '4000 4000'
-    k_list =  '1 1'
-    cp_list = '500 500'
+    roe_list = '400 400'
+    k_list =  '1000 1000'
+    cp_list = '100 100'
     sigma = 1
   [../]
 
-  
+  [./material_monte]
+    type = MonteCarloRadiationMaterial
+    temperature = temp
+    monte_carlo = montecarlo_userobject
+    boundary = 'in_left in_bottom in_right in_top'
+  [../]
 []
 
 [Executioner]
   type = Transient
   solve_type = newton
-  dt = 1E-02
+  dt = 1E-01
   num_steps = 1000
 
   l_tol = 1e-04
