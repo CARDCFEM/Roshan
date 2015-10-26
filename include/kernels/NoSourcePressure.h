@@ -6,7 +6,7 @@ class NoSourcePressure : public Kernel
 {
 public:
 
-	NoSourcePressure(const std::string & name, InputParameters parameters);
+	NoSourcePressure(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

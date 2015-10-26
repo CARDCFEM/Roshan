@@ -9,8 +9,8 @@ InputParameters validParams<IsoThermalBC>()
   return parameter;
 }
 
-IsoThermalBC::IsoThermalBC(const std::string & name, InputParameters parameters) :
-  NodalBC(name, parameters),
+IsoThermalBC::IsoThermalBC(const InputParameters & parameters) :
+  NodalBC(parameters),
   _value(getParam<Real>("value"))
 {}
 

@@ -9,8 +9,8 @@ InputParameters validParams<PyroRhoChangeKernel>()
   return params;
 }
 
- PyroRhoChangeKernel::PyroRhoChangeKernel(const std::string & name, InputParameters parameters) :
-     Kernel(name, parameters),
+ PyroRhoChangeKernel::PyroRhoChangeKernel(const InputParameters & parameters) :
+     Kernel(parameters),
      _rhov(1448),
      _rhoc(1185),
      _B(11000),

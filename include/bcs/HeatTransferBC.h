@@ -5,7 +5,7 @@
 class HeatTransferBC : public IntegratedBC
 {
 public:
-  HeatTransferBC(const std::string & name, InputParameters parameters);
+  HeatTransferBC(const InputParameters & parameters);
 protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();

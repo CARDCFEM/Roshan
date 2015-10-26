@@ -5,7 +5,7 @@
 class DGDirichletBC : public IntegratedBC
 {
 public:
-  DGDirichletBC(const std::string & name, InputParameters parameters);
+  DGDirichletBC(const InputParameters & parameters);
   virtual ~DGDirichletBC() {}
 
 protected:

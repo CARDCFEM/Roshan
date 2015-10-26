@@ -9,8 +9,8 @@ InputParameters validParams<PyroTempTimeDerivative>()
   return params;
 }
 
-PyroTempTimeDerivative::PyroTempTimeDerivative(const std::string & name, InputParameters parameters) :
-  TimeDerivative(name, parameters),
+PyroTempTimeDerivative::PyroTempTimeDerivative(const InputParameters & parameters) :
+  TimeDerivative(parameters),
    _cp(1256),
    _rho(coupledValue("rho")),
    _grad_rho(coupledGradient("rho")),

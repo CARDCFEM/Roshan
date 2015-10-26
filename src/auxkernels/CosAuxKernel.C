@@ -10,8 +10,8 @@ InputParameters validParams<CosAuxKernel>()
   return params;
 }
 
-CosAuxKernel::CosAuxKernel(const std::string & name, InputParameters parameters) :
-    AuxKernel(name, parameters),
+CosAuxKernel::CosAuxKernel(const InputParameters & parameters) :
+    AuxKernel(parameters),
 	_coef(getParam<Real>("coef")),
 	_temperature(coupledValue("T"))
 {

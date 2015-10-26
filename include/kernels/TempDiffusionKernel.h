@@ -6,7 +6,7 @@ class TempDiffusionKernel : public Kernel
 {
 public:
 
-	 TempDiffusionKernel(const std::string & name, InputParameters parameters);
+	 TempDiffusionKernel(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

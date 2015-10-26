@@ -21,8 +21,8 @@ InputParameters validParams<PyrolysisMaterial>()
   return params;
 }
 
-PyrolysisMaterial::PyrolysisMaterial(const std::string & name, InputParameters parameters) :
-      Material(name, parameters),
+PyrolysisMaterial::PyrolysisMaterial(const InputParameters & parameters) :
+      Material(parameters),
 //    _property_file(isParamValid("property_file") ? getParam<std::string>("property_file") : "" ),
     _temperature(coupledValue("temperature")),
 //	_pyT(declareProperty<Real>("pyrolysis_temp")),

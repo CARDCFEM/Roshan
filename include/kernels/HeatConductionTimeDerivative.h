@@ -7,7 +7,7 @@
 class HeatConductionTimeDerivative : public TimeDerivative
 {
 public:
-  HeatConductionTimeDerivative(const std::string & name, InputParameters parameters);
+  HeatConductionTimeDerivative(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

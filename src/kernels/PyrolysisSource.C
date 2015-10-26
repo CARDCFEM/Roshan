@@ -9,8 +9,8 @@ InputParameters validParams<PyrolysisSource>()
   return params;
 }
 
-PyrolysisSource::PyrolysisSource(const std::string & name, InputParameters parameters) :
-     Kernel(name, parameters),
+PyrolysisSource::PyrolysisSource(const InputParameters & parameters) :
+     Kernel(parameters),
 	 _deltaH(500000),
      _rho_dt(coupledDot("rho")),
 	 _rhoDot_dRho(coupledDotDu("rho")),

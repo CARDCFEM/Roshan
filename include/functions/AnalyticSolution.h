@@ -6,7 +6,7 @@
 class AnalyticSolution : public Function
 {
 public:
-	AnalyticSolution(const std::string & name, InputParameters parameters);
+	AnalyticSolution(const InputParameters & parameters);
     virtual Real value(Real t, const Point & p);
 
 protected:

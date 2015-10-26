@@ -5,7 +5,7 @@
 class HeatFluxAuxKernel : public AuxKernel
 {
 public:
-	HeatFluxAuxKernel(const std::string & name, InputParameters parameters);
+	HeatFluxAuxKernel(const InputParameters & parameters);
 
 protected:
   virtual Real computeValue();

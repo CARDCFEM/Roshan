@@ -6,7 +6,7 @@
 class OutputTest : public Console
 {
 public:
-	OutputTest(const std::string & name, InputParameters parameters);
+	OutputTest(const InputParameters & parameters);
 	virtual ~OutputTest(){};
 
 	void initialSetup();

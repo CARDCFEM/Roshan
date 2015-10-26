@@ -9,8 +9,8 @@ InputParameters validParams<ThetaL2Error>()
   return params;
 }
 
-ThetaL2Error::ThetaL2Error(const std::string & name, InputParameters parameters) :
-		ElementL2Error(name, parameters)
+ThetaL2Error::ThetaL2Error(const InputParameters & parameters) :
+		ElementL2Error(parameters)
 {
 }
 

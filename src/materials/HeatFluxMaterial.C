@@ -11,8 +11,8 @@ InputParameters validParams<HeatFluxMaterial>()
   InputParameters params = validParams<Material>();
 
   params.addRequiredCoupledVar("temperature", "Coupled Temperature");
-  params.addRequiredCoupledVar("sigma", "Coupled sigma");
-  params.addRequiredParam<Real>("epsilon", "epsilon");
+  params.addRequiredCoupledVar("epsilon", "Coupled epsilon");
+  params.addRequiredParam<Real>("sigma", "sigma");
   params.addRequiredParam<Real>("tw0", "tw0");
   params.addParam<std::string>("flux_data", "flux data from file");
   params.addParam<Real>("power", 2, "distance power");
@@ -22,13 +22,13 @@ InputParameters validParams<HeatFluxMaterial>()
   return params;
 }
 
-HeatFluxMaterial::HeatFluxMaterial(const std::string & name, InputParameters parameters) :
-      Material(name, parameters),
+HeatFluxMaterial::HeatFluxMaterial(const InputParameters & parameters) :
+      Material(parameters),
     _flux(declareProperty<Real>("heat_flux")),
     _flux_jacobi(declareProperty<Real>("heat_flux_jacobi")),
     _temperature(coupledValue("temperature")),
-    _sigma(coupledValue("sigma")),
-	_epsilon(getParam<Real>("epsilon")),
+    _epsilon(coupledValue("epsilon")),
+	_sigma(getParam<Real>("sigma")),
 	_tw0(getParam<Real>("tw0")),
 	_flux_file(isParamValid("flux_data") ? getParam<std::string>("flux_data") : ""),
 	_scale(getParam<std::vector<Real> >("scale")),
@@ -166,7 +166,7 @@ void HeatFluxMaterial::computeProperties()
 		Real tw = _temperature[_qp];
 		Real tw4 = Utility::pow<4>(tw);
 		Real tw3 = Utility::pow<3>(tw);
-	    _flux[_qp] = (ts[_qp] - tw)/(ts[_qp] - _tw0)*qc[_qp] - _epsilon*_sigma[_qp]*tw4;
-	    _flux_jacobi[_qp] = -qc[_qp]/(ts[_qp] - _tw0) - 4*_epsilon*_sigma[_qp]*tw3;
+	    _flux[_qp] = (ts[_qp] - tw)/(ts[_qp] - _tw0)*qc[_qp] - _sigma*_epsilon[_qp]*tw4;
+	    _flux_jacobi[_qp] = -qc[_qp]/(ts[_qp] - _tw0) - 4*_sigma*_epsilon[_qp]*tw3;
 	}
 }

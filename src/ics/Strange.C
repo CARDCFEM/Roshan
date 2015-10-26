@@ -9,8 +9,8 @@ InputParameters validParams<Strange>()
   return params;
 }
 
-Strange::Strange(const std::string & name, InputParameters parameters) :
-    InitialCondition(name, parameters)
+Strange::Strange(const InputParameters & parameters) :
+    InitialCondition(parameters)
 {}
 
 void Strange::print()

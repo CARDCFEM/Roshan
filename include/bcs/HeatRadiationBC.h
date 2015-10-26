@@ -9,7 +9,7 @@ using std::string;
 class HeatRadiationBC : public IntegratedBC
 {
 public:
-	HeatRadiationBC(const std::string & name, InputParameters parameters);
+	HeatRadiationBC(const InputParameters & parameters);
 
 protected:
 //  virtual void computeResidual();

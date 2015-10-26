@@ -6,7 +6,7 @@
 class HeatFaceKernel : public DGKernel
 {
 public:
-	HeatFaceKernel(const std::string & name, InputParameters parameters);
+	HeatFaceKernel(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual(Moose::DGResidualType type);

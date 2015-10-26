@@ -7,8 +7,8 @@ template<> InputParameters validParams<AnalyticSolution>()
    return params;
 }
 
-AnalyticSolution::AnalyticSolution(const std::string & name, InputParameters parameters) :
-    Function(name, parameters),
+AnalyticSolution::AnalyticSolution(const InputParameters & parameters) :
+    Function(parameters),
 	_alpha(2.5E-06),
 	_length(0.01)
 {

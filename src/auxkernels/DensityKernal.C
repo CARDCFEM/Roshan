@@ -15,8 +15,8 @@ InputParameters validParams<DensityKernel>()
   return params;
 }
 
-DensityKernel::DensityKernel(const std::string & name, InputParameters parameters) :
-    Kernel(name, parameters),
+DensityKernel::DensityKernel(const InputParameters &parameters) :
+    Kernel(parameters),
 //	_B(getParam<Real>("B")),
 //	_ER(getParam<Real>("ER")),
 //	_temperature(coupledValue("T")),

@@ -10,8 +10,8 @@ InputParameters validParams<GasConvection>()
   return params;
 }
 
-GasConvection::GasConvection(const std::string & name, InputParameters parameters) :
-		Kernel(name, parameters),
+GasConvection::GasConvection(const InputParameters & parameters) :
+		Kernel(parameters),
 	_rhog(1000),
 	_kp(getParam<RealTensorValue>("tensor_kp")),
 	_viscosity(1.98e-5),

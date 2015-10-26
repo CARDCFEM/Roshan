@@ -5,7 +5,7 @@
 class DensityKernel : public Kernel
 {
 public:
-	DensityKernel(const std::string & name, InputParameters parameters);
+	DensityKernel(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

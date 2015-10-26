@@ -18,8 +18,8 @@ InputParameters validParams<DGDirichletBC>()
   return params;
 }
 
-DGDirichletBC::DGDirichletBC(const std::string & name, InputParameters parameters) :
-    IntegratedBC(name, parameters),
+DGDirichletBC::DGDirichletBC(const InputParameters & parameters) :
+    IntegratedBC(parameters),
     _func(isParamValid("function") ? &getFunction("function") : NULL),
 //    _func(getFunction("function")),
 	_value(getParam<Real>("value")),

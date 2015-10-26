@@ -1,5 +1,6 @@
 #include "RoshanApp.h"
 
+#include "../../include/auxkernels/GetEpsilon.h"
 #include "PyroRhoChangeKernel.h"
 #include "PyroTempTimeDerivative.h"
 #include "TempDiffusionKernel.h"
@@ -30,7 +31,6 @@
 #include "PyrolysisGasVelocity.h"
 #include "NoSourcePressure.h"
 #include "GasConvection.h"
-#include "GetSigma.h"
 #include "HeatFluxAuxKernel.h"
 
 
@@ -64,8 +64,8 @@ InputParameters validParams<RoshanApp>()
   return params;
 }
 
-RoshanApp::RoshanApp(const std::string & name, InputParameters parameters) :
-    MooseApp(name, parameters)
+RoshanApp::RoshanApp(InputParameters parameters) :
+    MooseApp(parameters)
 {
   srand(processor_id());
 
@@ -85,12 +85,19 @@ RoshanApp::~RoshanApp()
 void
 RoshanApp::registerApps()
 {
+#undef  registerApp
+#define registerApp(name) AppFactory::instance().reg<name>(#name)
   registerApp(RoshanApp);
+#undef  registerApp
+#define registerApp(name) AppFactory::instance().regLegacy<name>(#name)
 }
 
 void
 RoshanApp::registerObjects(Factory & factory)
 {
+#undef registerObject
+#define registerObject(name) factory.reg<name>(stringifyName(name))
+
 	registerInitialCondition(TestIC);
 	registerInitialCondition(Strange);
 
@@ -130,7 +137,7 @@ RoshanApp::registerObjects(Factory & factory)
 //	registerAux(CosAuxKernel);
 //	registerAux(RhoTimeDerivative);
 //	registerAux(Gaspressure);
-	registerAux(GetSigma);
+	registerAux(GetEpsilon);
 	registerAux(HeatFluxAuxKernel);
 
 	registerFunction(AnalyticSolution);
@@ -138,6 +145,8 @@ RoshanApp::registerObjects(Factory & factory)
 	registerPostprocessor(ThetaL2Error);
 
 //	registerOutput(OutputTest);
+#undef registerObject
+#define registerObject(name) factory.regLegacy<name>(stringifyName(name))
 }
 
 void

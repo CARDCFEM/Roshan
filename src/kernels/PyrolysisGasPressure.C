@@ -10,8 +10,8 @@ InputParameters validParams<PyrolysisGasPressure>()
   return params;
 }
 
-PyrolysisGasPressure::PyrolysisGasPressure(const std::string & name, InputParameters parameters) :
-     Kernel(name, parameters),
+PyrolysisGasPressure::PyrolysisGasPressure(const InputParameters & parameters) :
+     Kernel(parameters),
 	 _R(1),
 	 _mg(1),
 	 _rhog(coupledValue("rhog")),

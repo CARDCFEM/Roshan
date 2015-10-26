@@ -7,8 +7,8 @@ InputParameters validParams<HeatConductionTimeDerivative>()
   return params;
 }
 
-HeatConductionTimeDerivative::HeatConductionTimeDerivative(const std::string & name, InputParameters parameters) :
-    TimeDerivative(name, parameters),
+HeatConductionTimeDerivative::HeatConductionTimeDerivative(const InputParameters & parameters) :
+    TimeDerivative(parameters),
     _cp(getMaterialProperty<Real>("specific_heat")),
     _cp_dT(getMaterialProperty<Real>("specific_heat_dT")),
     _rho(getMaterialProperty<Real>("density")),

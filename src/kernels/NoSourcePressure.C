@@ -8,8 +8,8 @@ InputParameters validParams<NoSourcePressure>()
   return params;
 }
 
-NoSourcePressure::NoSourcePressure(const std::string & name, InputParameters parameters) :
-     Kernel(name, parameters),
+NoSourcePressure::NoSourcePressure(const InputParameters & parameters) :
+     Kernel(parameters),
 	 _kp( 8.968e-9),
 	 _viscosity(1.98e-5),
 	 _poro(0.3)

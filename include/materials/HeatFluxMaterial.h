@@ -11,7 +11,7 @@ class Function;
 class HeatFluxMaterial : public Material
 {
 public:
-	HeatFluxMaterial(const std::string & name, InputParameters parameters);
+	HeatFluxMaterial(const InputParameters & parameters);
 
 protected:
   virtual void computeProperties();
@@ -24,9 +24,9 @@ private:
   MaterialProperty<Real> & _flux_jacobi;
 
   VariableValue & _temperature;
-  VariableValue & _sigma;
+  VariableValue & _epsilon;
 
-  Real _epsilon;
+  Real _sigma;
   Real _tw0;
 
   string _data_file;

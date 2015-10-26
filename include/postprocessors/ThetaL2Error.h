@@ -6,7 +6,7 @@ class Function;
 class ThetaL2Error : public ElementL2Error
 {
 public:
-	ThetaL2Error(const std::string & name, InputParameters parameters);
+	ThetaL2Error(const InputParameters & parameters);
 
   virtual Real getValue();
 

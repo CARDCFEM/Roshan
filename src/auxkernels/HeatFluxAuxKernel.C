@@ -8,8 +8,8 @@ InputParameters validParams<HeatFluxAuxKernel>()
   return params;
 }
 
-HeatFluxAuxKernel::HeatFluxAuxKernel(const std::string & name, InputParameters parameters) :
-    AuxKernel(name, parameters),
+HeatFluxAuxKernel::HeatFluxAuxKernel(const InputParameters & parameters) :
+    AuxKernel(parameters),
 	_flux(getMaterialProperty<Real>("heat_flux"))
 {
 }

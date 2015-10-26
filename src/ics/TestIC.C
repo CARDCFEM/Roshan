@@ -7,8 +7,8 @@ InputParameters validParams<TestIC>()
   return params;
 }
 
-TestIC::TestIC(const std::string & name, InputParameters parameters) :
-    InitialCondition(name, parameters)
+TestIC::TestIC(const InputParameters & parameters) :
+    InitialCondition(parameters)
 {}
 
 Real TestIC::value(const Point & p)

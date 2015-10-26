@@ -6,7 +6,7 @@ class PyroRhoChangeKernel : public Kernel
 {
 public:
 
- PyroRhoChangeKernel(const std::string & name, InputParameters parameters);
+ PyroRhoChangeKernel(const InputParameters & parameters);
 protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();

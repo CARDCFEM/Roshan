@@ -11,8 +11,8 @@ InputParameters validParams<HeatRadiationBC>()
   return params;
 }
 
-HeatRadiationBC::HeatRadiationBC(const std::string & name, InputParameters parameters) :
-  IntegratedBC(name, parameters),
+HeatRadiationBC::HeatRadiationBC(const InputParameters & parameters) :
+  IntegratedBC(parameters),
   _flux(getMaterialProperty<Real>("heat_flux")),
   _flux_jacobi(getMaterialProperty<Real>("heat_flux_jacobi"))
 {

@@ -9,8 +9,8 @@ InputParameters validParams<RhoTimeDerivative>()
   return params;
 }
 
-RhoTimeDerivative::RhoTimeDerivative(const std::string & name, InputParameters parameters) :
-    AuxKernel(name, parameters),
+RhoTimeDerivative::RhoTimeDerivative(const InputParameters & parameters) :
+    AuxKernel(parameters),
 	_rho_dt(coupledDot("rho")),
     _rho_num(coupled("rho"))
 {

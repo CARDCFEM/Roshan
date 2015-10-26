@@ -7,8 +7,8 @@ template<> InputParameters validParams<MMTFunction>()
    return params;
 }
 
-MMTFunction::MMTFunction(const std::string & name, InputParameters parameters) :
-    Function(name, parameters)
+MMTFunction::MMTFunction(const InputParameters & parameters) :
+    Function(parameters)
 {
 }
 

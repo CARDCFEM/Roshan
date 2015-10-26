@@ -6,7 +6,7 @@ class PyroTempTimeDerivative : public TimeDerivative
 {
 public:
 
-	PyroTempTimeDerivative(const std::string & name, InputParameters parameters);
+	PyroTempTimeDerivative(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

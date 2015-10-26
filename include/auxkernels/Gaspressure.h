@@ -5,7 +5,7 @@
 class Gaspressure : public AuxKernel
 {
 public:
-	Gaspressure(const std::string & name, InputParameters parameters);
+	Gaspressure(const InputParameters & parameters);
 
 protected:
   virtual Real computeValue();

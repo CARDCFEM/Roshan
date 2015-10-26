@@ -9,7 +9,7 @@ class Function;
 class HeatConductionMaterial : public Material
 {
 public:
-  HeatConductionMaterial(const std::string & name, InputParameters parameters);
+  HeatConductionMaterial(const InputParameters & parameters);
 
 protected:
   virtual void computeProperties();
@@ -20,7 +20,7 @@ private:
 
   std::string _property_file;
   int  _tpoint;
-  Real _sigmanum;
+  Real _epsilon;
   VariableValue & _temperature;
   MaterialProperty<Real> & _k;
   MaterialProperty<Real> & _k_dT;
@@ -28,7 +28,7 @@ private:
   MaterialProperty<Real> & _cp_dT;
   MaterialProperty<Real> & _rho;
   MaterialProperty<Real> & _rho_dT;
-  MaterialProperty<Real> & _sigma;
+  MaterialProperty<Real> & _epsilon_material;
   LinearInterpolation _func_roe_T;
   LinearInterpolation _func_k_T;
   LinearInterpolation _func_cp_T;

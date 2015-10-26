@@ -6,7 +6,7 @@
 class HeatFluxBC : public IntegratedBC
 {
 public:
-	HeatFluxBC(const std::string & name, InputParameters parameters);
+	HeatFluxBC(const InputParameters & parameters);
 protected:
 	virtual Real computeQpResidual();
 	const Real & _value;

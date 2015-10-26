@@ -6,7 +6,7 @@ class GasConvection : public Kernel
 {
 public:
 
-	GasConvection(const std::string & name, InputParameters parameters);
+	GasConvection(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

@@ -10,8 +10,8 @@ InputParameters validParams<HeatFaceKernel>()
   return params;
 }
 
-HeatFaceKernel::HeatFaceKernel(const std::string & name, InputParameters parameters) :
-    DGKernel(name, parameters),
+HeatFaceKernel::HeatFaceKernel(const InputParameters & parameters) :
+    DGKernel(parameters),
     _epsilon(getParam<Real>("epsilon")),
     _sigma(getParam<Real>("sigma"))
 {

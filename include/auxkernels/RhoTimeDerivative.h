@@ -4,7 +4,7 @@
 class RhoTimeDerivative : public AuxKernel
 {
 public:
-	RhoTimeDerivative(const std::string & name, InputParameters parameters);
+	RhoTimeDerivative(const InputParameters & parameters);
 
 protected:
   virtual Real computeValue();

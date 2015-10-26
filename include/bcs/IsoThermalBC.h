@@ -8,7 +8,7 @@ class IsoThermalBC;
 class IsoThermalBC : public NodalBC
 {
 public:
-	IsoThermalBC(const std::string & name, InputParameters parameters);
+	IsoThermalBC(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

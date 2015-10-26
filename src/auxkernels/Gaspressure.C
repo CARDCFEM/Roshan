@@ -11,8 +11,8 @@ InputParameters validParams<Gaspressure>()
   return params;
 }
 
-Gaspressure::Gaspressure(const std::string & name, InputParameters parameters) :
-    AuxKernel(name, parameters),
+Gaspressure::Gaspressure(const InputParameters & parameters) :
+    AuxKernel(parameters),
 	_R(20),
     _mg(1e-2),
     _rhog(coupledValue("rhog")),

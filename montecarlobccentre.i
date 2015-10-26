@@ -1,7 +1,15 @@
 [Mesh]
-  file = square_cavity_2D_20.exo
+  dim = 2
+  file = square_cavity_2D_test_20.exo
+  uniform_refine = 0
 []
-
+[MeshModifiers]
+  [./scale]
+    type = Transform
+    transform = SCALE
+    vector_value = '0.1 0.1 0.1'
+  [../]
+[]
 [Variables]
   [./temp]
   [../]
@@ -11,7 +19,6 @@
   [./heat_flux]
     order = CONSTANT
     family = MONOMIAL
-    
   [../]
 []
 
@@ -19,7 +26,7 @@
   [./heat_flux_aux_kernel]
     type = HeatFluxAuxKernel
     variable = heat_flux
-    boundary = 'in_left in_bottom in_right in_top'
+    boundary = 'in_left_1 in_bottom_1 in_right_1 in_top_1 in_left_0 in_bottom_0 in_right_0 in_top_0'
   [../]
 []
 
@@ -44,10 +51,10 @@
 
 [BCs]
   [./out300]
-    type = IsoThermalBC
+    type = HeatFluxBC
     variable = temp
     boundary = 'out_left out_top out_bottom '
-    value = 300
+    value = 0
   [../]
   [./out500]
     type = HeatFluxBC
@@ -58,7 +65,7 @@
   [./inner]
     type = HeatRadiationBC
     variable = temp
-    boundary = 'in_left in_bottom in_right in_top'
+    boundary = 'in_left_1 in_bottom_1 in_right_1 in_top_1 in_left_0 in_bottom_0 in_right_0 in_top_0'
   [../]
 
 []
@@ -67,24 +74,29 @@
 [UserObjects]
   [./montecarlo_userobject]
     type = ComputeTemperatureBar
-    boundary = 'in_left in_bottom in_right in_top'
-    max_reflect_count = 10
-    particle_count=10000
-    absorptivity=1
-    diffuse_reflectivity=0.5
-    mirrors_reflectivity=0.5
+    boundary = 'in_left_1 in_bottom_1 in_right_1 in_top_1 in_left_0 in_bottom_0 in_right_0 in_top_0'
     temperature = temp
   [../]
 []
 
 [Materials]
-  [./material]
+  [./material1]
     type = HeatConductionMaterial
     temperature = temp
-    block = ANY_BLOCK_ID
+    block = '1 2 3 4'
     t_list =  '100 200'
     roe_list = '400 400'
-    k_list =  '1000 1000'
+    k_list =  '50 50'
+    cp_list = '100 100'
+    sigma = 1
+  [../]
+[./material2]
+    type = HeatConductionMaterial
+    temperature = temp
+    block = 5
+    t_list =  '100 200'
+    roe_list = '400 400'
+    k_list =  '0.5 0.5'
     cp_list = '100 100'
     sigma = 1
   [../]
@@ -93,15 +105,21 @@
     type = MonteCarloRadiationMaterial
     temperature = temp
     monte_carlo = montecarlo_userobject
-    boundary = 'in_left in_bottom in_right in_top'
+    boundary = 'in_left_1 in_bottom_1 in_right_1 in_top_1 in_left_0 in_bottom_0 in_right_0 in_top_0'
+    max_reflect_count = 10
+    particle_count=10000
+    epsilon=1.0
+    absorptivity=1.0
+    diffuse_reflectivity=0.5
+    mirrors_reflectivity=0.5
   [../]
 []
 
 [Executioner]
   type = Transient
   solve_type = newton
-  dt = 1E-01
-  num_steps = 1
+  dt = 1E-02
+  num_steps = 1000
 
   l_tol = 1e-04
   nl_rel_tol = 1e-05
@@ -112,12 +130,15 @@
 []
 
 [Outputs]
-  exodus = true
-  output_on = 'initial timestep_end'
   [./console]
     type = Console
     perf_log = true
     output_on = 'timestep_end failed nonlinear linear'
+  [../]
+  [./exodus]
+    type = Exodus
+    perf_log = true
+    output_on = 'timestep_end'
   [../]
 []
 

@@ -10,8 +10,8 @@ InputParameters validParams<PyrolysisGasRhochange>()
   return params;
 }
 
-PyrolysisGasRhochange::PyrolysisGasRhochange(const std::string & name, InputParameters parameters) :
-     Kernel(name, parameters),
+PyrolysisGasRhochange::PyrolysisGasRhochange(const InputParameters & parameters) :
+     Kernel(parameters),
 	 _poro(0.3),
      _rho_dt(coupledDot("rho")),
 	 _rhoDot_dRho(coupledDotDu("rho")),

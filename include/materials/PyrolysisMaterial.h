@@ -9,7 +9,7 @@ class Function;
 class PyrolysisMaterial : public Material
 {
 public:
-	 PyrolysisMaterial(const std::string & name, InputParameters parameters);
+	 PyrolysisMaterial(const InputParameters & parameters);
 
 protected:
   virtual void computeProperties();

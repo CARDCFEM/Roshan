@@ -6,7 +6,7 @@ class PyrolysisEnergeKernel : public Kernel
 {
 public:
 
-	PyrolysisEnergeKernel(const std::string & name, InputParameters parameters);
+	PyrolysisEnergeKernel(const InputParameters & parameters);
 
 protected:
   virtual Real computeQpResidual();

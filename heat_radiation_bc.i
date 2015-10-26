@@ -33,10 +33,6 @@
     type = HeatRadiationBC
     variable = temp
     boundary = left
-    sigma = 1E-06
-    epsilon = 1E-06
-    tw0 = 300
-    qc_file = qc.dat
   [../]
   [./right]
     type = IsoThermalBC
@@ -62,11 +58,12 @@
   [./material]
     type = HeatConductionMaterial
     temperature = temp
-    block = 0
+    block = ANY_BLOCK_ID
     t_list = '0 1'
     roe_list = '2300 2300'
     k_list = '1 1'
     cp_list = '100 100'
+    epsilon_real = 1
   [../]
 []
 
@@ -74,7 +71,7 @@
   type = Transient
   solve_type = newton
   dt = 1E-02
-  num_steps = 5
+  num_steps = 500
 
   l_tol = 1e-04
   nl_rel_tol = 1e-05

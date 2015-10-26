@@ -10,8 +10,8 @@ InputParameters validParams<HeatTransferBC>()
   return params;
 }
 
-HeatTransferBC::HeatTransferBC(const std::string & name, InputParameters parameters) :
-  IntegratedBC(name, parameters),
+HeatTransferBC::HeatTransferBC(const InputParameters & parameters) :
+  IntegratedBC(parameters),
   _h(getParam<Real>("h")),
   _ta(getParam<Real>("Ta"))
 {}

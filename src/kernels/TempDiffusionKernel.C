@@ -8,8 +8,8 @@ InputParameters validParams<TempDiffusionKernel>()
   return params;
 }
 
-TempDiffusionKernel::TempDiffusionKernel(const std::string & name, InputParameters parameters) :
-     Kernel(name, parameters),
+TempDiffusionKernel::TempDiffusionKernel(const InputParameters & parameters) :
+     Kernel(parameters),
      _k(0.75)
 {
 }

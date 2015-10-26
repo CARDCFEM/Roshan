@@ -30,8 +30,8 @@ InputParameters validParams<OutputTest>()
   return params;
 }
 
-OutputTest::OutputTest(const std::string & name, InputParameters parameters) :
-    Console(name, parameters)
+OutputTest::OutputTest(const InputParameters & parameters) :
+    Console(parameters)
 {
 }
 

@@ -5,7 +5,7 @@
 class CosAuxKernel : public AuxKernel
 {
 public:
-	CosAuxKernel(const std::string & name, InputParameters parameters);
+	CosAuxKernel(const InputParameters & parameters);
 
 protected:
   virtual Real computeValue();

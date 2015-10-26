@@ -9,8 +9,8 @@ InputParameters validParams<PyrolysisEnergeKernel>()
   return params;
 }
 
-PyrolysisEnergeKernel::PyrolysisEnergeKernel(const std::string & name, InputParameters parameters) :
-     Kernel(name, parameters),
+PyrolysisEnergeKernel::PyrolysisEnergeKernel(const InputParameters & parameters) :
+     Kernel(parameters),
 	 _cp(1256),
      _k(0.75),
 	 _deltaH(500000),

@@ -11,7 +11,7 @@ InputParameters validParams<RoshanApp>();
 class RoshanApp : public MooseApp
 {
 public:
-  RoshanApp(const std::string & name, InputParameters parameters);
+  RoshanApp(InputParameters parameters);
   virtual ~RoshanApp();
 
   virtual void printHeader();

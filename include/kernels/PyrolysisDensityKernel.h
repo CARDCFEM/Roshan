@@ -6,7 +6,7 @@ class PyrolysisDensityKernel : public Kernel
 {
 public:
 
-PyrolysisDensityKernel(const std::string & name, InputParameters parameters);
+PyrolysisDensityKernel(const InputParameters & parameters);
 protected:
   virtual Real computeQpResidual();
   virtual Real computeQpJacobian();

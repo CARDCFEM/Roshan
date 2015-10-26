@@ -8,8 +8,8 @@ InputParameters validParams<HeatFluxBC>()
   return params;
 }
 
-HeatFluxBC::HeatFluxBC(const std::string & name, InputParameters parameters) :
-  IntegratedBC(name, parameters),
+HeatFluxBC::HeatFluxBC(const InputParameters & parameters) :
+  IntegratedBC(parameters),
   _value(getParam<Real>("value"))
 {}
 

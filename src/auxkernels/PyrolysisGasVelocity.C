@@ -14,8 +14,8 @@ InputParameters validParams<PyrolysisGasVelocity>()
   return params;
 }
 
-PyrolysisGasVelocity::PyrolysisGasVelocity(const std::string & name, InputParameters parameters) :
-    AuxKernel(name, parameters),
+PyrolysisGasVelocity::PyrolysisGasVelocity(const InputParameters & parameters) :
+    AuxKernel(parameters),
 	_rhog(10),
 	_kp(getParam<RealTensorValue>("tensor_kp")),
 	_viscosity(1.98e-5),

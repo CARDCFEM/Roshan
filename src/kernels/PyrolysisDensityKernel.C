@@ -9,8 +9,8 @@ InputParameters validParams<PyrolysisDensityKernel>()
   return params;
 }
 
-PyrolysisDensityKernel::PyrolysisDensityKernel(const std::string & name, InputParameters parameters) :
-     Kernel(name, parameters),
+PyrolysisDensityKernel::PyrolysisDensityKernel(const InputParameters & parameters) :
+     Kernel(parameters),
      _rhov(1448),
      _rhoc(1185),
      _B(11000),
