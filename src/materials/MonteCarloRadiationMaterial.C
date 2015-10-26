@@ -33,8 +33,8 @@ MonteCarloRadiationMaterial::MonteCarloRadiationMaterial(const InputParameters &
       Material(parameters),
 	  RandomInterface(parameters, *parameters.get<FEProblem *>("_fe_problem"), parameters.get<THREAD_ID>("_tid"), false),
 	  _current_side_elem(_assembly.sideElem()),
-	  _temperature(coupledValue("temperature")),
 	  _uo((getUserObject<ComputeTemperatureBar>("monte_carlo"))),
+	  _temperature(coupledValue("temperature")),
 	  _flux(declareProperty<Real>("heat_flux")),
 	  _flux_jacobi(declareProperty<Real>("heat_flux_jacobi")),
 	  _max_reflect_count(getParam<int> ("max_reflect_count")),
@@ -94,6 +94,7 @@ void MonteCarloRadiationMaterial::initialSetup()
 	for (int i=0;i<_all_element.size();i++)
 	{
 		_temperature_pow4_bar[_all_element[i]->_elem] = 8.1e+9;
+		_temperature_pow4_bar[_all_element[i]->_elem] = 2.7e+7;
 	}
 	computeRD();
 }
@@ -103,17 +104,10 @@ void MonteCarloRadiationMaterial::timestepSetup()
 	for (int i=0;i<_all_element.size();i++)
 	{
 		_temperature_pow4_bar[_all_element[i]->_elem] = _uo.getTemperature_Pow4_Bar(_all_element[i]->_elem);
+		_temperature_pow3_bar[_all_element[i]->_elem] = _uo.getTemperature_Pow3_Bar(_all_element[i]->_elem);
 	}
 }
-void MonteCarloRadiationMaterial::initialize()
-{
-//	computeRadiationFlux();
-}
 
-//void MonteCarloRadiationMaterial::finalize()
-//{
-//	computeRadiationFlux();
-//}
 
 MonteCarloRadiationMaterial::~MonteCarloRadiationMaterial()
 {
@@ -177,6 +171,9 @@ int MonteCarloRadiationMaterial::Find_i(const Elem * elem) const
 			break;
 		}
 	}
+	if(findi == -1)
+		mooseError("MonteCarloRadiationMaterial::Find_i" << "没有找到");
+
 	return findi;
 }
 
@@ -284,7 +281,7 @@ void MonteCarloRadiationMaterial::computeRadiationFlux()
 
 		}
 		flux_radiation[i]= _sigma*Flux_Rad/_all_element[i]->_elem->volume();
-		flux_radiation_jacobi[i]= 4*_sigma*(_all_element[i]->_RD[ _all_element[i] ])*_epsilon*_uo.getTemperature_Pow3_Bar(_all_element[i]->_elem);
+		flux_radiation_jacobi[i]= 4*_sigma*(_all_element[i]->_RD[ _all_element[i] ])*_epsilon*_temperature_pow3_bar[_all_element[i]->_elem];
 //		cout << "side_element_centre:" << _all_element[i]->_elem->centroid() << i << "      halfFlux:" << flux_radiation[i]  << endl;
 	}
 }
