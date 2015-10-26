@@ -9,7 +9,7 @@
 //#include "RandomInterface.h"
 using namespace std;
 
-SideElement::SideElement(const Elem *elem, const Point normal, Real epsilon, Real absorptivity, Real diffuse_reflectivity, Real mirrors_reflectivity) :
+SideElement::SideElement(Elem *elem, const Point normal, Real epsilon, Real absorptivity, Real diffuse_reflectivity, Real mirrors_reflectivity) :
  _epsilon(epsilon),
  _absorptivity(absorptivity),
  _diffuse_reflectivity(diffuse_reflectivity),

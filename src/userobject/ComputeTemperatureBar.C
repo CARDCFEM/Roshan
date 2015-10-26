@@ -121,6 +121,31 @@ ComputeTemperatureBar::ComputeTemperatureBar(const InputParameters & parameters)
 ////	cout <<  "side_element_centre:" << _all_element[findi]->_elem->centroid() << findi << "    T_pow4_bar:" << temperature_pow4_bar[findi] << endl;
 //}
 
+Real ComputeTemperatureBar::getTemperature_Pow4_Bar(Elem * elem)  const
+{
+	for(map<const Elem *, Real>::iterator it = _temperature_pow4_bar.begin(); it != _temperature_pow4_bar.end(); ++it)
+	{
+		Point p = it->first->centroid()-elem->centroid();
+		if(p.size() < TOLERANCE)
+			return it->second;
+	}
+	mooseError("未找到单元");
+	return 0;
+//	return _temperature_pow4_bar[elem];
+//	cout << "pow4:" << _temperature_pow4_bar[elem] << endl;
+}
+Real ComputeTemperatureBar::getTemperature_Pow3_Bar(Elem * elem)  const
+{
+	for(map<const Elem *, Real>::iterator it = _temperature_pow3_bar.begin(); it != _temperature_pow3_bar.end(); ++it)
+	{
+		Point p = it->first->centroid()-elem->centroid();
+		if(p.size() < TOLERANCE)
+			return it->second;
+	}
+	mooseError("未找到单元");
+	return 0;
+}
+
 void ComputeTemperatureBar::execute()
 {
 //	int findi=Find_i(_current_side_elem);
@@ -135,8 +160,9 @@ void ComputeTemperatureBar::execute()
 
 	temp_pow4_bar /= _current_side_volume;
 	temp_pow3_bar /= _current_side_volume;
-	temperature_pow4_bar[_current_side_elem] = temp_pow4_bar;
-	temperature_pow3_bar[_current_side_elem] = temp_pow3_bar;
+	_temperature_pow4_bar[_current_side_elem] = temp_pow4_bar;
+//	cout << "pow4:xia" << _temperature_pow4_bar[_current_side_elem] << endl;
+//	_temperature_pow3_bar[_current_side_elem] = temp_pow3_bar;
 //	cout <<  "side_element_centre:" << _all_element[findi]->_elem->centroid() << findi << "    T_pow4_bar:" << temperature_pow4_bar[findi] << endl;
 }
 
@@ -200,7 +226,7 @@ void ComputeTemperatureBar::execute()
 ////		cout << "side_element_centre:" << _all_element[i]->_elem->centroid() << i << "      Flux:" << flux_radiation[i]  << endl;
 //	}
 //}
-
+//
 //int ComputeTemperatureBar::Find_i(const Elem * elem) const
 //{
 //	int findi=-1;

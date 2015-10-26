@@ -1,4 +1,5 @@
 #include "MonteCarloRadiationMaterial.h"
+#include "ComputeTemperatureBar.h"
 #include <iostream>
 #include "FEProblem.h"
 #include "libmesh/elem.h"
@@ -6,9 +7,6 @@
 #include "libmesh/string_to_enum.h"
 #include "libmesh/quadrature_gauss.h"
 #include "libmesh/plane.h"
-
-#include "ComputeTemperatureBar.h"
-
 #include "RayLine.h"
 #include "MooseRandom.h"
 
@@ -21,13 +19,13 @@ InputParameters validParams<MonteCarloRadiationMaterial>()
   params += validParams<RandomInterface>();
   params.addCoupledVar("temperature", "温度场");
   params.addRequiredParam<UserObjectName>("monte_carlo", "Monte Carlo");
-
   params.addParam<int> ("max_reflect_count", 10, "最大反射次数");
   params.addParam<int> ("particle_count", 1000000, "单元发射粒子数");
-  params.addParam<Real> ("epsilon", 0.5, "发射率");
-  params.addParam<Real> ("absorptivity", 0.5, "吸收率");
+  params.addParam<Real> ("epsilon", 1.0, "发射率");
+  params.addParam<Real> ("absorptivity", 1.0, "吸收率");
   params.addParam<Real> ("diffuse_reflectivity", 0.5, "漫反射百分比");
   params.addParam<Real> ("mirrors_reflectivity", 0.5, "镜反射百分比");
+  params.addParam<Real> ("sigma", 5.67e-8, "黑体辐射常数");
   return params;
 }
 
@@ -39,13 +37,13 @@ MonteCarloRadiationMaterial::MonteCarloRadiationMaterial(const InputParameters &
 	  _uo((getUserObject<ComputeTemperatureBar>("monte_carlo"))),
 	  _flux(declareProperty<Real>("heat_flux")),
 	  _flux_jacobi(declareProperty<Real>("heat_flux_jacobi")),
-
 	  _max_reflect_count(getParam<int> ("max_reflect_count")),
 	  _particle_count(getParam<int> ("particle_count")),
 	  _epsilon(getParam<Real> ("epsilon")),
 	  _absorptivity(getParam<Real> ("absorptivity")),
 	  _diffuse_reflectivity(getParam<Real> ("diffuse_reflectivity")),
-	  _mirrors_reflectivity(getParam<Real> ("mirrors_reflectivity"))
+	  _mirrors_reflectivity(getParam<Real> ("mirrors_reflectivity")),
+	  _sigma(getParam<Real> ("sigma"))
 {
 }
 
@@ -93,18 +91,29 @@ void MonteCarloRadiationMaterial::initialSetup()
 	}
 	flux_radiation.resize(_all_element.size(), 0);
 	flux_radiation_jacobi.resize(_all_element.size(), 0);
+	for (int i=0;i<_all_element.size();i++)
+	{
+		_temperature_pow4_bar[_all_element[i]->_elem] = 8.1e+9;
+	}
 	computeRD();
 }
 
+void MonteCarloRadiationMaterial::timestepSetup()
+{
+	for (int i=0;i<_all_element.size();i++)
+	{
+		_temperature_pow4_bar[_all_element[i]->_elem] = _uo.getTemperature_Pow4_Bar(_all_element[i]->_elem);
+	}
+}
 void MonteCarloRadiationMaterial::initialize()
 {
 //	computeRadiationFlux();
 }
 
-void MonteCarloRadiationMaterial::finalize()
-{
-	computeRadiationFlux();
-}
+//void MonteCarloRadiationMaterial::finalize()
+//{
+//	computeRadiationFlux();
+//}
 
 MonteCarloRadiationMaterial::~MonteCarloRadiationMaterial()
 {
@@ -114,7 +123,12 @@ MonteCarloRadiationMaterial::~MonteCarloRadiationMaterial()
 			delete _all_element[i];
 	}
 }
-
+void MonteCarloRadiationMaterial::computeProperties()
+{
+//	cout << "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" << endl;
+	computeRadiationFlux();
+	Material::computeProperties();
+}
 void MonteCarloRadiationMaterial::computeRD()
 {
 	for(int ii  = 0; ii < _all_element.size(); ii++)
@@ -258,42 +272,31 @@ int MonteCarloRadiationMaterial::Find_j_of_RDij(SideElement * sideelement_i, vec
 
 void MonteCarloRadiationMaterial::computeRadiationFlux()
 {
-	Real epsilon=5.67e-8;
 	Real Flux_Rad=0.0;
-
 	for (int i=0;i<_all_element.size();i++)
 	{
 		Flux_Rad=0.0;
 		for (int j=0;j<_all_element.size();j++)
 		{
-//			Flux_Rad += (_all_element[j]->_RD[ _all_element[i] ])*_all_element[j]->_elem->volume()*_absorptivity*temperature_pow4_bar[j];
-			Flux_Rad += (_all_element[j]->_RD[ _all_element[i] ])*_all_element[j]->_elem->volume()*_absorptivity*_uo.getTemperature_Pow4_Bar(_all_element[j]->_elem);
-		}
+//			cout << "uo.getTemperature_Pow4_Bar" << _uo.getTemperature_Pow4_Bar(_current_side_elem) << endl;
+//			Flux_Rad += (_all_element[j]->_RD[ _all_element[i] ])*_all_element[j]->_elem->volume()*_epsilon*_uo.getTemperature_Pow4_Bar(_all_element[j]->_elem);
+			Flux_Rad += (_all_element[j]->_RD[ _all_element[i] ])*_all_element[j]->_elem->volume()*_epsilon*_temperature_pow4_bar[_all_element[j]->_elem];
 
-//		flux_radiation[i]= epsilon*Flux_Rad/_all_element[i]->_elem->volume()-epsilon*_absorptivity*temperature_pow4_bar[i];
-		flux_radiation[i]= epsilon*Flux_Rad/_all_element[i]->_elem->volume();
-//		flux_radiation_jacobi[i]= 4*epsilon*(_all_element[i]->_RD[ _all_element[i] ])*_absorptivity*temperature_pow3_bar[i];
-		flux_radiation_jacobi[i]= 4*epsilon*(_all_element[i]->_RD[ _all_element[i] ])*_absorptivity*_uo.getTemperature_Pow3_Bar(_all_element[i]->_elem);
-//		cout << "side_element_centre:" << _all_element[i]->_elem->centroid() << i << "      Flux:" << flux_radiation[i]  << endl;
+		}
+		flux_radiation[i]= _sigma*Flux_Rad/_all_element[i]->_elem->volume();
+		flux_radiation_jacobi[i]= 4*_sigma*(_all_element[i]->_RD[ _all_element[i] ])*_epsilon*_uo.getTemperature_Pow3_Bar(_all_element[i]->_elem);
+//		cout << "side_element_centre:" << _all_element[i]->_elem->centroid() << i << "      halfFlux:" << flux_radiation[i]  << endl;
 	}
 }
 
 void MonteCarloRadiationMaterial::computeQpProperties()
 {
-//	std::cout << "flu"  << std::endl;
-//	std::cout << "热流: " << _uo.getRadiationFlux(_current_side_elem) << std::endl;
-//	mooseError("d");
-	Real sigma=5.67e-8;
-	Real epsilon=1.0;
-
 	int i=Find_i(_current_side_elem);
 
-//	Real flux =  _uo.getRadiationFlux(_current_side_elem) ;
-//	Real flux_jacobi =  _uo.getRadiationFluxJacobi(_current_side_elem) ;
 	Real flux = flux_radiation[i];
 	Real flux_jacobi =  flux_radiation_jacobi[i];
 
-	_flux[_qp] = flux-sigma*epsilon*pow(_temperature[_qp],4);
-	_flux_jacobi[_qp] = flux_jacobi-4*sigma*epsilon*pow(_temperature[_qp], 3);
+	_flux[_qp] = flux-_sigma*_epsilon*pow(_temperature[_qp],4);
+	_flux_jacobi[_qp] = flux_jacobi-4*_sigma*_epsilon*pow(_temperature[_qp], 3);
 //	cout << "side_element_centre:" << _current_side_elem->centroid() << "      Flux:" << _flux[_qp]  << endl;
 }

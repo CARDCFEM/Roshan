@@ -19,8 +19,10 @@ public:
 //	int Which_SideelementIntersectedByLine(RayLine& ray, SideElement * sideelement_i, vector<SideElement*> sideelement_vec, Point & point);
 //	int Find_j_of_RDij(SideElement * sideelement_i, vector<SideElement*> sideelement_vec);
 //	int Find_i(const Elem * elem) const;
-	Real getTemperature_Pow4_Bar(const Elem * elem)  const  { Real a = temperature_pow4_bar[elem]; return a;}
-	Real getTemperature_Pow3_Bar(const Elem * elem)  const  {return temperature_pow3_bar[elem];}
+//	Real getTemperature_Pow4_Bar(const Elem * elem)  const  {return _temperature_pow4_bar[elem];}
+//	Real getTemperature_Pow3_Bar(const Elem * elem)  const  {return _temperature_pow3_bar[elem];}
+	Real getTemperature_Pow4_Bar(Elem * elem)  const;
+	Real getTemperature_Pow3_Bar(Elem * elem)  const;
 //	Real getTemBar(int i) const {return temperature_pow4_bar[i];}
 //	Real getRadiationFlux(int i)  const  {return flux_radiation[i];}
 //	Real getRadiationFlux(const Elem * elem)  const  {return flux_radiation[Find_i(elem)];}
@@ -45,10 +47,8 @@ protected :
 //	Real _mirrors_reflectivity;
 //
 	VariableValue &_temperature;
-	mutable map<const Elem *, Real> temperature_pow4_bar;
-	mutable map<const Elem *, Real> temperature_pow3_bar;
-//	vector<Real> temperature_pow4_bar;
-//	vector<Real> temperature_pow3_bar;
+	mutable map<const Elem*, Real> _temperature_pow4_bar;
+	mutable map<const Elem*, Real> _temperature_pow3_bar;
 //	vector<Real> flux_radiation;
 //	vector<Real> flux_radiation_jacobi;
 };

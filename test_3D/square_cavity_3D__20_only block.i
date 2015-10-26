@@ -1,6 +1,6 @@
 [Mesh]
-  dim = 2
-  file = square_cavity_2D_test_20.exo
+  dim = 3
+  file = square_cavity_3D_20_onlyblock.exo
   uniform_refine = 0
 []
 [MeshModifiers]
@@ -26,7 +26,7 @@
   [./heat_flux_aux_kernel]
     type = HeatFluxAuxKernel
     variable = heat_flux
-    boundary = 'in_left_1 in_bottom_1 in_right_1 in_top_1 in_left_0 in_bottom_0 in_right_0 in_top_0'
+    boundary = 'in_left in_bottom in_right in_top in_front in_back'
   [../]
 []
 
@@ -53,7 +53,7 @@
   [./out300]
     type = HeatFluxBC
     variable = temp
-    boundary = 'out_left out_top out_bottom '
+    boundary = 'out_left out_top out_bottom out_front out_back '
     value = 0
   [../]
   [./out500]
@@ -65,7 +65,7 @@
   [./inner]
     type = HeatRadiationBC
     variable = temp
-    boundary = 'in_left_1 in_bottom_1 in_right_1 in_top_1 in_left_0 in_bottom_0 in_right_0 in_top_0'
+    boundary = 'in_left in_bottom in_right in_top in_front in_back'
   [../]
 
 []
@@ -74,7 +74,7 @@
 [UserObjects]
   [./montecarlo_userobject]
     type = ComputeTemperatureBar
-    boundary = 'in_left_1 in_bottom_1 in_right_1 in_top_1 in_left_0 in_bottom_0 in_right_0 in_top_0'
+    boundary = 'in_left in_bottom in_right in_top in_front in_back'
     temperature = temp
   [../]
 []
@@ -105,7 +105,7 @@
     type = MonteCarloRadiationMaterial
     temperature = temp
     monte_carlo = montecarlo_userobject
-    boundary = 'in_left_1 in_bottom_1 in_right_1 in_top_1 in_left_0 in_bottom_0 in_right_0 in_top_0'
+    boundary = 'in_left in_bottom in_right in_top in_front in_back'
     max_reflect_count = 10
     particle_count=10000
     epsilon=1.0

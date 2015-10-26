@@ -7,7 +7,7 @@
 #include "SideElement.h"
 #include <vector>
 using std::vector;
-//using std::map;
+using std::map;
 
 class RayLine;
 class ComputeTemperatureBar;
@@ -22,13 +22,14 @@ public:
 	int Which_SideelementIntersectedByLine(RayLine& ray, SideElement * sideelement_i, vector<SideElement*> sideelement_vec, Point & point);
 	int Find_j_of_RDij(SideElement * sideelement_i, vector<SideElement*> sideelement_vec);
 	int Find_i(const Elem * elem) const;
-	Real getRadiationFlux(int i)  const  {return flux_radiation[i];}
-	Real getRadiationFlux(const Elem * elem)  const  {return flux_radiation[Find_i(elem)];}
-	Real getRadiationFluxJacobi(const Elem * elem)  const  {return flux_radiation_jacobi[Find_i(elem)];}
+//	Real getRadiationFlux(int i)  const  {return flux_radiation[i];}
+//	Real getRadiationFlux(const Elem * elem)  const  {return flux_radiation[Find_i(elem)];}
+//	Real getRadiationFluxJacobi(const Elem * elem)  const  {return flux_radiation_jacobi[Find_i(elem)];}
 	~MonteCarloRadiationMaterial();
 
 protected:
   virtual void computeQpProperties();
+  virtual void computeProperties();
 
   const Elem * & _current_side_elem;
 
@@ -38,8 +39,9 @@ protected:
   MaterialProperty<Real> & _flux_jacobi;
 
   virtual void initialSetup();
+  virtual void timestepSetup();
   virtual void initialize();
-  virtual void finalize();
+//  virtual void finalize();
 
   virtual void computeRadiationFlux();
   void computeRD();
@@ -52,12 +54,15 @@ protected:
   Real _absorptivity;
   Real _diffuse_reflectivity;
   Real _mirrors_reflectivity;
+  Real _sigma;
 
 //  VariableValue &_temperature;
 //  vector<Real> temperature_pow4_bar;
 //  vector<Real> temperature_pow3_bar;
   vector<Real> flux_radiation;
   vector<Real> flux_radiation_jacobi;
+  map<Elem*, Real> _temperature_pow4_bar;
+  map<Elem*, Real> _temperature_pow3_bar;
 
 };
 
